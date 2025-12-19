@@ -19,9 +19,11 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Ingredient createIngredient(Ingredient ingredient) {
 
-        if (ingredient.getCostPerUnit() == null || ingredient.getCostPerUnit() <= 0) {
-            throw new BadRequestException("Invalid cost per unit");
-        }
+        if (ingredient.getCostPerUnit() == null ||
+    ingredient.getCostPerUnit().compareTo(BigDecimal.ZERO) <= 0) {
+    throw new BadRequestException("Cost per unit must be greater than zero");
+}
+
 
         ingredientRepository.findByNameIgnoreCase(ingredient.getName())
                 .ifPresent(i -> {
