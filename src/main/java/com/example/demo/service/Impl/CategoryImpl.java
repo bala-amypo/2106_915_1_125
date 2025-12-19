@@ -1,3 +1,4 @@
+
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Ingredient;
@@ -66,5 +67,87 @@ public class IngredientServiceImpl implements IngredientService {
 
         ingredient.setActive(false);
         ingredientRepository.save(ingredient);
+    }
+}
+Cat
+package com.example.demo.service;
+
+import com.example.demo.entity.Category;
+
+import java.util.List;
+
+public interface CategoryService {
+
+    Category createCategory(Category category);
+
+    Category updateCategory(Long id, Category category);
+
+    Category getCategoryById(Long id);
+
+    List<Category> getAllCategories();
+
+    void deactivateCategory(Long id);
+}
+Impl
+package com.example.demo.service.impl;
+
+import com.example.demo.entity.Category;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.CategoryRepository;
+import com.example.demo.service.CategoryService;
+
+import java.util.List;
+
+public class CategoryServiceImpl implements CategoryService {
+
+    private final CategoryRepository categoryRepository;
+
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    @Override
+    public Category createCategory(Category category) {
+
+        categoryRepository.findByNameIgnoreCase(category.getName())
+                .ifPresent(c -> {
+                    throw new BadRequestException("Category name already exists");
+                });
+
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public Category updateCategory(Long id, Category updated) {
+
+        Category existing = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        existing.setName(updated.getName());
+        existing.setDescription(updated.getDescription());
+
+        return categoryRepository.save(existing);
+    }
+
+    @Override
+    public Category getCategoryById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    }
+
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public void deactivateCategory(Long id) {
+
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        category.setActive(false);
+        categoryRepository.save(category);
     }
 }
