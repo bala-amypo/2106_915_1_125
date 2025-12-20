@@ -43,3 +43,4 @@ public class ProfitCalculationRecord {
 
     public LocalDateTime getCalculatedAt() { return calculatedAt; }
 }
+BigDecimal profit = sellingPrice.subtract(costPrice);
