@@ -20,9 +20,10 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Ingredient createIngredient(Ingredient ingredient) {
 
-        // ✅ FIX: use getPrice()
-        if (ingredient.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("Price must be greater than zero");
+        // ✅ FIX: use getCost(), NOT getPrice()
+        if (ingredient.getCost() == null ||
+            ingredient.getCost().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Cost must be greater than zero");
         }
 
         return ingredientRepository.save(ingredient);
@@ -39,12 +40,14 @@ public class IngredientServiceImpl implements IngredientService {
                 .orElseThrow(() -> new RuntimeException("Ingredient not found"));
     }
 
-    // ✅ REQUIRED
     @Override
     public Ingredient updateIngredient(Long id, Ingredient ingredient) {
+
         Ingredient existing = getIngredientById(id);
+
         existing.setName(ingredient.getName());
-        existing.setPrice(ingredient.getPrice());
+        existing.setCost(ingredient.getCost());
+
         return ingredientRepository.save(existing);
     }
 
