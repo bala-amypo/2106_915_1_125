@@ -1,70 +1,51 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Table(name = "menu_items", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "name")
-})
+@Table(name = "menu_items")
 public class MenuItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String name;
 
-    private String description;
+    private Double price;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal sellingPrice;
-
-    @Column(nullable = false)
-    private Boolean active = true;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    @ManyToMany
-    @JoinTable(
-            name = "menu_item_categories",
-            joinColumns = @JoinColumn(name = "menu_item_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private Set<Category> categories = new HashSet<>();
-
-    @PrePersist
-    public void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = createdAt;
+    // 🔹 Constructors
+    public MenuItem() {
     }
 
-    @PreUpdate
-    public void onUpdate() {
-        updatedAt = LocalDateTime.now();
+    public MenuItem(String name, Double price) {
+        this.name = name;
+        this.price = price;
     }
 
-    // getters & setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // 🔹 Getters and Setters
+    public Long getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getName() {
+        return name;
+    }
 
-    public BigDecimal getSellingPrice() { return sellingPrice; }
-    public void setSellingPrice(BigDecimal sellingPrice) { this.sellingPrice = sellingPrice; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    // ⭐ THIS METHOD WAS MISSING
+    public Double getPrice() {
+        return price;
+    }
 
-    public Set<Category> getCategories() { return categories; }
-    public void setCategories(Set<Category> categories) { this.categories = categories; }
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 }

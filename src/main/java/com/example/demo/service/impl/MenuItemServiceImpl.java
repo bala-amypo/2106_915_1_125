@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service   // ⭐ THIS ANNOTATION WAS MISSING
+@Service
 public class MenuItemServiceImpl implements MenuItemService {
 
     private final MenuItemRepository menuItemRepository;
@@ -36,7 +36,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     public MenuItem updateMenuItem(Long id, MenuItem menuItem) {
         MenuItem existing = getMenuItemById(id);
         existing.setName(menuItem.getName());
-        existing.setPrice(menuItem.getPrice());
+        existing.setPrice(menuItem.getPrice()); // ✅ now works
         return menuItemRepository.save(existing);
     }
 
