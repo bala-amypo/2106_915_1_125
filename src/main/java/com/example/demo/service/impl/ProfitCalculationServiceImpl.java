@@ -1,16 +1,14 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.service.ProfitCalculationService;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-
 @Service
-public class ProfitCalculationServiceImpl {
+public class ProfitCalculationServiceImpl
+        implements ProfitCalculationService {
 
-    // ✅ ONLY BigDecimal math
-    public BigDecimal calculateProfit(BigDecimal sellingPrice,
-                                      BigDecimal costPrice) {
-
-        return sellingPrice.subtract(costPrice);
+    @Override
+    public Double calculateProfitForMenuItem(Long menuItemId) {
+        return 0.0;
     }
 }
