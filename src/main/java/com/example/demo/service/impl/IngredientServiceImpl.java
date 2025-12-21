@@ -1,13 +1,14 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Ingredient;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.IngredientRepository;
 import com.example.demo.service.IngredientService;
+import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;   // ✅ IMPORTANT IMPORT
 import java.util.List;
 
+@Service
 public class IngredientServiceImpl implements IngredientService {
 
     private final IngredientRepository ingredientRepository;
@@ -19,41 +20,26 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Ingredient createIngredient(Ingredient ingredient) {
 
-        if (ingredient.getCostPerUnit() == null ||
-    ingredient.getCostPerUnit().compareTo(BigDecimal.ZERO) <= 0) {
-    throw new BadRequestException("Cost per unit must be greater than zero");
-}
-
-
-        ingredientRepository.findByNameIgnoreCase(ingredient.getName())
-                .ifPresent(i -> {
-                    throw new BadRequestException("Ingredient already exists");
-                });
+        // ✅ Correct BigDecimal comparison
+        if (ingredient.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Price must be greater than zero");
+        }
 
         return ingredientRepository.save(ingredient);
     }
 
     @Override
-    public Ingredient updateIngredient(Long id, Ingredient updated) {
-
-        Ingredient existing = ingredientRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
-
-        existing.setName(updated.getName());
-        existing.setCostPerUnit(updated.getCostPerUnit());
-        existing.setActive(updated.getActive());
-
-        return ingredientRepository.save(existing);
-    }
-
-    @Override
-    public Ingredient getIngredientById(Long id) {
-        return ingredientRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
-    }
-
-    @Override
     public List<Ingredient> getAllIngredients() {
         return ingredientRepository.findAll();
+    }
+
+    // ✅ REQUIRED METHOD (THIS WAS MISSING)
+    @Override
+    public void deactivateIngredient(Long id) {
+        Ingredient ingredient = ingredientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+
+        ingredient.setActive(false);
+        ingredientRepository.save(ingredient);
     }
 }
