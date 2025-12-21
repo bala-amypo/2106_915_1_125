@@ -5,6 +5,8 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -16,18 +18,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-
-        // ✅ FIX: use getEmail(), NOT getUsername()
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("User already exists");
-        }
-
         return userRepository.save(user);
     }
 
+    // ✅ REQUIRED
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

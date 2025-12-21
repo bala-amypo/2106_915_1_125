@@ -5,7 +5,7 @@ import com.example.demo.repository.IngredientRepository;
 import com.example.demo.service.IngredientService;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;   // ✅ IMPORTANT IMPORT
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -20,9 +20,9 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Ingredient createIngredient(Ingredient ingredient) {
 
-        // ✅ Correct BigDecimal comparison
-        if (ingredient.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("Price must be greater than zero");
+        // ✅ FIX: use getCost(), NOT getPrice()
+        if (ingredient.getCost().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Cost must be greater than zero");
         }
 
         return ingredientRepository.save(ingredient);
@@ -33,12 +33,16 @@ public class IngredientServiceImpl implements IngredientService {
         return ingredientRepository.findAll();
     }
 
-    // ✅ REQUIRED METHOD (THIS WAS MISSING)
+    // ✅ REQUIRED
+    @Override
+    public Ingredient getIngredientById(Long id) {
+        return ingredientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+    }
+
     @Override
     public void deactivateIngredient(Long id) {
-        Ingredient ingredient = ingredientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
-
+        Ingredient ingredient = getIngredientById(id);
         ingredient.setActive(false);
         ingredientRepository.save(ingredient);
     }

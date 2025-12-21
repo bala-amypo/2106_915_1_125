@@ -32,7 +32,14 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new RuntimeException("Category not found"));
     }
 
-    // ✅ REQUIRED METHOD (THIS WAS MISSING)
+    // ✅ REQUIRED
+    @Override
+    public Category updateCategory(Long id, Category category) {
+        Category existing = getCategoryById(id);
+        existing.setName(category.getName());
+        return categoryRepository.save(existing);
+    }
+
     @Override
     public void deactivateCategory(Long id) {
         Category category = getCategoryById(id);
