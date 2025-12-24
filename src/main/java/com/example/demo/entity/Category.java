@@ -5,39 +5,32 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "categories", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "name")
-})
+@Table(name = "categories")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     private String description;
 
-    @Column(nullable = false)
-    private Boolean active = true;
+    private boolean active = true;
 
     @ManyToMany(mappedBy = "categories")
     private Set<MenuItem> menuItems = new HashSet<>();
 
     // getters and setters
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
     public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
-
+    public boolean isActive() { return active; }
     public Set<MenuItem> getMenuItems() { return menuItems; }
-    public void setMenuItems(Set<MenuItem> menuItems) { this.menuItems = menuItems; }
+
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setDescription(String description) { this.description = description; }
+    public void setActive(boolean active) { this.active = active; }
 }
