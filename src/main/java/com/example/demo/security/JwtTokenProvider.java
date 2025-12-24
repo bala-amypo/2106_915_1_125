@@ -11,10 +11,9 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // secret key
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long validityInMilliseconds = 3600000; // 1 hour
 
-    // Generate token using username
     public String generateToken(String username) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + validityInMilliseconds);
@@ -27,7 +26,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // Validate token (optional, can expand)
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -37,7 +35,6 @@ public class JwtTokenProvider {
         }
     }
 
-    // Extract username
     public String getUsername(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token)
