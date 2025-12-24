@@ -1,36 +1,43 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "ingredients", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "name")
-})
 public class Ingredient {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String unit;
+    private BigDecimal costPerUnit;
+    private boolean active = true;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    public Long getId() {
+        return id;
+    }
 
-    @Column(nullable = false)
-    private BigDecimal cost;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    @Column(nullable = false)
-    private Boolean active = true;
+    public String getUnit() {
+        return unit;
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public BigDecimal getCostPerUnit() {
+        return costPerUnit;
+    }
 
-    public BigDecimal getCost() { return cost; }
-    public void setCost(BigDecimal cost) { this.cost = cost; }
+    public void setCostPerUnit(BigDecimal costPerUnit) {
+        this.costPerUnit = costPerUnit;
+    }
 
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public boolean isActive() {
+        return active;
+    }
+
+    public void deactivate() {
+        this.active = false;
+    }
 }

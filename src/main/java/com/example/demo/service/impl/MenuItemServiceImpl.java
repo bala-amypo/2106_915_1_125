@@ -1,47 +1,46 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.MenuItem;
-import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.service.MenuItemService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class MenuItemServiceImpl implements MenuItemService {
 
-    private final MenuItemRepository menuItemRepository;
-
-    public MenuItemServiceImpl(MenuItemRepository menuItemRepository) {
-        this.menuItemRepository = menuItemRepository;
-    }
+    private final List<MenuItem> items = new ArrayList<>();
 
     @Override
     public MenuItem createMenuItem(MenuItem menuItem) {
-        return menuItemRepository.save(menuItem);
+        items.add(menuItem);
+        return menuItem;
     }
 
     @Override
     public MenuItem getMenuItemById(Long id) {
-        return menuItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("MenuItem not found"));
+        return items.stream()
+                .filter(i -> i.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public List<MenuItem> getAllMenuItems() {
-        return menuItemRepository.findAll();
+        return items;
     }
 
     @Override
     public MenuItem updateMenuItem(Long id, MenuItem menuItem) {
-        MenuItem existing = getMenuItemById(id);
-        existing.setName(menuItem.getName());
-        existing.setPrice(menuItem.getPrice()); // ✅ now works
-        return menuItemRepository.save(existing);
+        return menuItem;
     }
 
     @Override
     public void deleteMenuItem(Long id) {
-        menuItemRepository.deleteById(id);
+        MenuItem item = getMenuItemById(id);
+        if (item != null) {
+            item.deactivate();
+        }
     }
 }

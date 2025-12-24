@@ -1,60 +1,46 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Ingredient;
-import com.example.demo.repository.IngredientRepository;
 import com.example.demo.service.IngredientService;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
-    private final IngredientRepository ingredientRepository;
-
-    public IngredientServiceImpl(IngredientRepository ingredientRepository) {
-        this.ingredientRepository = ingredientRepository;
-    }
+    private final List<Ingredient> store = new ArrayList<>();
 
     @Override
     public Ingredient createIngredient(Ingredient ingredient) {
-
-        // ✅ FIX: use getCost(), NOT getPrice()
-        if (ingredient.getCost() == null ||
-            ingredient.getCost().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("Cost must be greater than zero");
-        }
-
-        return ingredientRepository.save(ingredient);
-    }
-
-    @Override
-    public List<Ingredient> getAllIngredients() {
-        return ingredientRepository.findAll();
+        store.add(ingredient);
+        return ingredient;
     }
 
     @Override
     public Ingredient getIngredientById(Long id) {
-        return ingredientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+        return store.stream()
+                .filter(i -> i.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public List<Ingredient> getAllIngredients() {
+        return store;
     }
 
     @Override
     public Ingredient updateIngredient(Long id, Ingredient ingredient) {
-
-        Ingredient existing = getIngredientById(id);
-
-        existing.setName(ingredient.getName());
-        existing.setCost(ingredient.getCost());
-
-        return ingredientRepository.save(existing);
+        return ingredient;
     }
 
     @Override
     public void deactivateIngredient(Long id) {
         Ingredient ingredient = getIngredientById(id);
-        ingredient.setActive(false);
-        ingredientRepository.save(ingredient);
+        if (ingredient != null) {
+            ingredient.deactivate();
+        }
     }
 }
