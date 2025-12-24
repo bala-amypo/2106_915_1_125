@@ -45,16 +45,21 @@ public class MenuItem {
         updatedAt = LocalDateTime.now();
     }
 
-    // getters and setters
+    // ✅ REQUIRED GETTERS & SETTERS
     public Long getId() { return id; }
-    public String getName() { return name; }
-    public BigDecimal getSellingPrice() { return sellingPrice; }
-    public boolean isActive() { return active; }
-    public Set<Category> getCategories() { return categories; }
 
-    public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public BigDecimal getSellingPrice() { return sellingPrice; }
     public void setSellingPrice(BigDecimal sellingPrice) { this.sellingPrice = sellingPrice; }
+
+    public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+
+    public Set<Category> getCategories() { return categories; }
+    public void setCategories(Set<Category> categories) { this.categories = categories; }
 }
