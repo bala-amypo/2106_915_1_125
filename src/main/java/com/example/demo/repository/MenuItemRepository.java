@@ -11,6 +11,6 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 
     Optional<MenuItem> findByNameIgnoreCase(String name);
 
-    @Query("SELECT DISTINCT m FROM MenuItem m LEFT JOIN FETCH m.categories WHERE m.active = true")
+    @Query("SELECT DISTINCT m FROM MenuItem m JOIN FETCH m.categories c WHERE m.active = true")
     List<MenuItem> findAllActiveWithCategories();
 }
