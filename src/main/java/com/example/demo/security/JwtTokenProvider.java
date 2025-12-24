@@ -1,30 +1,47 @@
 package com.example.demo.security;
 
-import com.example.demo.entity.User;
-import org.springframework.security.core.Authentication;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
+@Component
 public class JwtTokenProvider {
 
-    private final String secret;
-    private final long validityInMs;
+    // Secret key for JWT signing (use a strong secret in production)
+    private final String jwtSecret = "mySecretKey12345";
 
-    public JwtTokenProvider(String secret, long validityInMs) {
-        this.secret = secret;
-        this.validityInMs = validityInMs;
+    // Token validity: 1 hour
+    private final long jwtExpirationMs = 3600000;
+
+    // Generate JWT token
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
-    public String generateToken(Authentication authentication, User user) {
-        // Tests mock this method
-        return "jwt-token";
-    }
-
+    // Validate JWT token
     public boolean validateToken(String token) {
-        // Tests only check that this method exists
-        return true;
+        try {
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    public String getEmailFromToken(String token) {
-        // Used by JwtAuthenticationFilter
-        return "test@example.com";
+    // Extract username/email from token
+    public String getUsernameFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
     }
 }
