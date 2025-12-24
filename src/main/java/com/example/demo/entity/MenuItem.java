@@ -11,19 +11,30 @@ public class MenuItem {
     private Long id;
 
     private String name;
+
     private BigDecimal sellingPrice;
+
     private boolean active = true;
 
-    // 🔴 REQUIRED by tests
-    public void setSellingPrice(BigDecimal sellingPrice) {
-        this.sellingPrice = sellingPrice;
+    // 🔴 REQUIRED by services
+    public Long getId() {
+        return id;
     }
 
     public BigDecimal getSellingPrice() {
         return sellingPrice;
     }
 
-    public void deactivateItem() {
+    public void setSellingPrice(BigDecimal sellingPrice) {
+        this.sellingPrice = sellingPrice;
+    }
+
+    // 🔴 REQUIRED by services
+    public void deactivate() {
         this.active = false;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }

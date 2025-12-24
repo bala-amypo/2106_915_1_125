@@ -5,9 +5,7 @@ import com.example.demo.repository.IngredientRepository;
 import com.example.demo.service.IngredientService;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-
-@Service // 🔴 MISSING in your project
+@Service
 public class IngredientServiceImpl implements IngredientService {
 
     private final IngredientRepository ingredientRepository;
@@ -17,16 +15,13 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Ingredient updateCost(Long id, BigDecimal cost) {
-        Ingredient ingredient = ingredientRepository.findById(id).orElseThrow();
-        ingredient.setCostPerUnit(cost);
-        return ingredientRepository.save(ingredient);
-    }
-
-    @Override
     public void deactivate(Long id) {
-        Ingredient ingredient = ingredientRepository.findById(id).orElseThrow();
-        ingredient.deactivateIngredient();
+        Ingredient ingredient = ingredientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+        
+        // ✅ FIXED METHOD NAME
+        ingredient.deactivate();
+
         ingredientRepository.save(ingredient);
     }
 }

@@ -16,7 +16,10 @@ public class Ingredient {
 
     private boolean active = true;
 
-    // 🔴 REQUIRED by your tests
+    public Long getId() {
+        return id;
+    }
+
     public BigDecimal getCostPerUnit() {
         return costPerUnit;
     }
@@ -25,13 +28,12 @@ public class Ingredient {
         this.costPerUnit = costPerUnit;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
+    // ✅ ADD THIS METHOD
     public void deactivateIngredient() {
         this.active = false;
     }
 
-    // getters & setters
+    public boolean isActive() {
+        return active;
+    }
 }
