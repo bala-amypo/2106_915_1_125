@@ -7,33 +7,37 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recipe-ingredients")
+@RequestMapping("/api/recipe-ingredients")
 public class RecipeIngredientController {
 
-    private final RecipeIngredientService recipeIngredientService;
+    private final RecipeIngredientService recipeService;
 
-    public RecipeIngredientController(RecipeIngredientService recipeIngredientService) {
-        this.recipeIngredientService = recipeIngredientService;
+    public RecipeIngredientController(RecipeIngredientService recipeService) {
+        this.recipeService = recipeService;
     }
 
     @PostMapping
-    public RecipeIngredient addIngredient(@RequestBody RecipeIngredient recipeIngredient) {
-        return recipeIngredientService.addIngredientToMenuItem(recipeIngredient);
+    public RecipeIngredient add(@RequestBody RecipeIngredient ri) {
+        return recipeService.addIngredientToMenuItem(ri);
     }
 
     @PutMapping("/{id}")
-    public RecipeIngredient updateIngredient(@PathVariable Long id,
-                                              @RequestParam Double quantity) {
-        return recipeIngredientService.updateRecipeIngredient(id, quantity);
+    public RecipeIngredient update(@PathVariable Long id, @RequestParam Double quantity) {
+        return recipeService.updateRecipeIngredient(id, quantity);
     }
 
     @GetMapping("/menu-item/{menuItemId}")
     public List<RecipeIngredient> getByMenuItem(@PathVariable Long menuItemId) {
-        return recipeIngredientService.getIngredientsByMenuItem(menuItemId);
+        return recipeService.getIngredientsByMenuItem(menuItemId);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteIngredient(@PathVariable Long id) {
-        recipeIngredientService.removeIngredientFromRecipe(id);
+    public void delete(@PathVariable Long id) {
+        recipeService.removeIngredientFromRecipe(id);
+    }
+
+    @GetMapping("/ingredient/{ingredientId}/total-quantity")
+    public Double getTotal(@PathVariable Long ingredientId) {
+        return recipeService.getTotalQuantityOfIngredient(ingredientId);
     }
 }
