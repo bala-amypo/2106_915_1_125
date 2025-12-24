@@ -1,32 +1,44 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
-    public User saveUser(User user) {
+    public User register(RegisterRequest request) {
+
+        userRepository.findByEmailIgnoreCase(request.getEmail())
+                .ifPresent(u -> {
+                    throw new BadRequestException("Email already in use");
+                });
+
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole() == null ? "USER" : request.getRole());
+
         return userRepository.save(user);
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmailIgnoreCase(email).orElse(null);
-    }
-
-    @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public User findByEmailIgnoreCase(String email) {
+        return userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new BadRequestException("User not found"));
     }
 }
