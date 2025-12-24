@@ -1,11 +1,14 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Ingredient;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.IngredientRepository;
 import com.example.demo.service.IngredientService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {
@@ -16,22 +19,58 @@ public class IngredientServiceImpl implements IngredientService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    // 🔴 THIS METHOD WAS MISSING — NOW FIXED
     @Override
-    public Ingredient updateCost(Long id, BigDecimal cost) {
-        Ingredient ingredient = ingredientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+    public Ingredient createIngredient(Ingredient ingredient) {
 
-        ingredient.setCostPerUnit(cost);
+        ingredientRepository.findByNameIgnoreCase(ingredient.getName())
+                .ifPresent(i -> {
+                    throw new BadRequestException("Ingredient already exists");
+                });
+
+        if (ingredient.getCostPerUnit() == null ||
+                ingredient.getCostPerUnit().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("Cost per unit must be greater than zero");
+        }
+
+        ingredient.setActive(true);
         return ingredientRepository.save(ingredient);
     }
 
     @Override
-    public void deactivate(Long id) {
-        Ingredient ingredient = ingredientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+    public Ingredient updateIngredient(Long id, Ingredient ingredient) {
 
-        ingredient.deactivate();
+        Ingredient existing = ingredientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
+
+        if (ingredient.getCostPerUnit() != null &&
+                ingredient.getCostPerUnit().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("Cost per unit must be greater than zero");
+        }
+
+        existing.setName(ingredient.getName());
+        existing.setUnit(ingredient.getUnit());
+        existing.setCostPerUnit(ingredient.getCostPerUnit());
+
+        return ingredientRepository.save(existing);
+    }
+
+    @Override
+    public Ingredient getIngredientById(Long id) {
+        return ingredientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
+    }
+
+    @Override
+    public List<Ingredient> getAllIngredients() {
+        return ingredientRepository.findAll();
+    }
+
+    @Override
+    public void deactivateIngredient(Long id) {
+        Ingredient ingredient = ingredientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
+
+        ingredient.setActive(false);
         ingredientRepository.save(ingredient);
     }
 }

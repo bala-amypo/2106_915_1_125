@@ -1,11 +1,18 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Ingredient;
-import java.math.BigDecimal;
+
+import java.util.List;
 
 public interface IngredientService {
 
-    Ingredient updateCost(Long id, BigDecimal cost);
+    Ingredient createIngredient(Ingredient ingredient);
 
-    void deactivate(Long id);
+    Ingredient updateIngredient(Long id, Ingredient ingredient);
+
+    Ingredient getIngredientById(Long id);
+
+    List<Ingredient> getAllIngredients();
+
+    void deactivateIngredient(Long id);
 }
