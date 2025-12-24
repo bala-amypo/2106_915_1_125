@@ -20,36 +20,32 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Login endpoint
     @PostMapping("/login")
     public String login(@RequestBody AuthRequest request) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );
 
-        User user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository.findByUsername(request.username())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Generate JWT token
         return jwtTokenProvider.generateToken(user.getUsername());
     }
 
-    // Register endpoint
     @PostMapping("/register")
     public String register(@RequestBody AuthRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
+        if (userRepository.existsByUsername(request.username())) {
             return "Username already exists";
         }
 
         User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setUsername(request.username());
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setRole("USER");
 
         userRepository.save(user);
         return "User registered successfully";
     }
 
-    // Request body for login/register
     public static record AuthRequest(String username, String password) {}
 }
