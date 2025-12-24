@@ -16,6 +16,7 @@ public class Ingredient {
 
     private boolean active = true;
 
+    // 🔴 REQUIRED
     public Long getId() {
         return id;
     }
@@ -28,8 +29,8 @@ public class Ingredient {
         this.costPerUnit = costPerUnit;
     }
 
-    // ✅ ADD THIS METHOD
-    public void deactivateIngredient() {
+    // 🔴 REQUIRED (MATCH SERVICE)
+    public void deactivate() {
         this.active = false;
     }
 
