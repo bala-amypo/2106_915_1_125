@@ -1,46 +1,32 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Ingredient;
+import com.example.demo.repository.IngredientRepository;
 import com.example.demo.service.IngredientService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
-@Service
+@Service // 🔴 MISSING in your project
 public class IngredientServiceImpl implements IngredientService {
 
-    private final List<Ingredient> store = new ArrayList<>();
+    private final IngredientRepository ingredientRepository;
 
-    @Override
-    public Ingredient createIngredient(Ingredient ingredient) {
-        store.add(ingredient);
-        return ingredient;
+    public IngredientServiceImpl(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
     }
 
     @Override
-    public Ingredient getIngredientById(Long id) {
-        return store.stream()
-                .filter(i -> i.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+    public Ingredient updateCost(Long id, BigDecimal cost) {
+        Ingredient ingredient = ingredientRepository.findById(id).orElseThrow();
+        ingredient.setCostPerUnit(cost);
+        return ingredientRepository.save(ingredient);
     }
 
     @Override
-    public List<Ingredient> getAllIngredients() {
-        return store;
-    }
-
-    @Override
-    public Ingredient updateIngredient(Long id, Ingredient ingredient) {
-        return ingredient;
-    }
-
-    @Override
-    public void deactivateIngredient(Long id) {
-        Ingredient ingredient = getIngredientById(id);
-        if (ingredient != null) {
-            ingredient.deactivate();
-        }
+    public void deactivate(Long id) {
+        Ingredient ingredient = ingredientRepository.findById(id).orElseThrow();
+        ingredient.deactivateIngredient();
+        ingredientRepository.save(ingredient);
     }
 }

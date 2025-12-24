@@ -1,43 +1,29 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
 public class MenuItem {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private BigDecimal sellingPrice;
     private boolean active = true;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setDescription(String name) {
-        this.name = name;
+    // 🔴 REQUIRED by tests
+    public void setSellingPrice(BigDecimal sellingPrice) {
+        this.sellingPrice = sellingPrice;
     }
 
     public BigDecimal getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(BigDecimal sellingPrice) {
-        this.sellingPrice = sellingPrice;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void deactivate() {
+    public void deactivateItem() {
         this.active = false;
     }
 }
