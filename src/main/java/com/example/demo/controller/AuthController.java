@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthRequest;   // ✅ REQUIRED IMPORT
 import org.springframework.web.bind.annotation.*;
 
 @RestController
