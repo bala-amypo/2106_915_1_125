@@ -1,8 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Category {
@@ -11,16 +9,17 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean active;
+    private String name;
+    private String description;
+    private boolean active = true;
 
-    @ManyToMany
-    private Set<MenuItem> menuItems = new HashSet<>();
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public boolean isActive() { return active; }
 
-    public boolean getActive() { return active; }
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setDescription(String description) { this.description = description; }
     public void setActive(boolean active) { this.active = active; }
-
-    public Set<MenuItem> getMenuItems() { return menuItems; }
-    public void setMenuItems(HashSet<MenuItem> items) {
-        this.menuItems = items;
-    }
 }
