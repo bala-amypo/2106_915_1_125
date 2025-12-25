@@ -11,18 +11,19 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String role;
+
     // ===== Constructors =====
     public User() {}
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 
     // ===== Getters & Setters =====
     public Long getId() {
@@ -33,11 +34,19 @@ public class User {
         this.id = id;
     }
 
+    public String getUsername() {            // ✅ REQUIRED
+        return username;
+    }
+
+    public void setUsername(String username) {  // ✅ REQUIRED
+        this.username = username;
+    }
+
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {   // ✅ REQUIRED
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -47,5 +56,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {                // ✅ REQUIRED
+        return role;
+    }
+
+    public void setRole(String role) {       // ✅ REQUIRED
+        this.role = role;
     }
 }
