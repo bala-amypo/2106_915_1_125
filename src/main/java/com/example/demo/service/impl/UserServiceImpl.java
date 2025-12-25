@@ -1,44 +1,38 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public User register(RegisterRequest request) {
+    public User registerUser(String email, String password) {
 
-        userRepository.findByEmailIgnoreCase(request.getEmail())
+        // check if user already exists
+        userRepository.findByEmailIgnoreCase(email)
                 .ifPresent(u -> {
-                    throw new BadRequestException("Email already in use");
+                    throw new RuntimeException("Email already exists");
                 });
 
         User user = new User();
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole() == null ? "USER" : request.getRole());
+        user.setEmail(email);        // ✅ FIXED
+        user.setPassword(password);
 
         return userRepository.save(user);
     }
 
     @Override
-    public User findByEmailIgnoreCase(String email) {
-        return userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new BadRequestException("User not found"));
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmailIgnoreCase(email) // ✅ FIXED
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
