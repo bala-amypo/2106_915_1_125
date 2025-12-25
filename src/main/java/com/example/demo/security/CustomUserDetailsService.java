@@ -1,23 +1,16 @@
 package com.example.demo.security;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.*;
+import org.springframework.stereotype.Service;
 
-@Component
-public class JwtTokenFilter implements Filter {
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
 
-    private final JwtTokenProvider provider;
-
-    public JwtTokenFilter(JwtTokenProvider provider) {
-        this.provider = provider;
-    }
-
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
-            throws IOException, ServletException {
-
-        HttpServletRequest request = (HttpServletRequest) req;
-        chain.doFilter(request, res);
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        return User.withUsername(username)
+                .password("{noop}password")
+                .roles("USER")
+                .build();
     }
 }

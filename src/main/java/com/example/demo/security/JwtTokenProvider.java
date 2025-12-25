@@ -1,15 +1,23 @@
 package com.example.demo.security;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
 
-    public boolean validateToken(String token) {
-        return true;
-    }
+    private final String SECRET = "secret";
+    private final long EXPIRATION = 86400000;
 
-    public String getUsernameFromToken(String token) {
-        return "user";
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .compact();
     }
 }
