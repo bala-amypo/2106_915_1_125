@@ -1,33 +1,23 @@
 package com.example.demo.security;
 
-import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.stereotype.Service;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import org.springframework.stereotype.Component;
 
-import java.util.Collections;
+@Component
+public class JwtTokenFilter implements Filter {
 
-@Service
-public class CustomUserDetailsService implements UserDetailsService {
+    private final JwtTokenProvider provider;
 
-    private final UserRepository userRepository;
-
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public JwtTokenFilter(JwtTokenProvider provider) {
+        this.provider = provider;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
 
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),     // ✅ FIXED
-                user.getPassword(),
-                Collections.emptyList()
-        );
+        HttpServletRequest request = (HttpServletRequest) req;
+        chain.doFilter(request, res);
     }
 }
