@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.MenuItem;
+import java.util.List;
 
 public interface ProfitCalculationService {
-    double calculateProfit(MenuItem item);
+    String getCalculationById(Long id);
+    List<String> getCalculationsForMenuItem(Long menuItemId);
+    List<String> getAllCalculations();
 }
