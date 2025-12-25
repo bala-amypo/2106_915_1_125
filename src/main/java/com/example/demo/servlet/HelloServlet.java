@@ -4,10 +4,9 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;
 import java.io.IOException;
 
-@WebServlet("/hello-servlet")
-public class HelloServlet extends HttpServlet {
+@WebServlet("/demo-servlet")
+public class DemoServlet extends HttpServlet {
 
-    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         resp.getWriter().write("Hello Servlet");

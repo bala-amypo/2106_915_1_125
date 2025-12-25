@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.entity.User;
+import org.springframework.stereotype.Service;
 
-public interface UserService {
-    User register(RegisterRequest request);
+@Service
+public class UserService {
+    public String getMessage() {
+        return "Service working";
+    }
 }
