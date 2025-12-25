@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
+    public String login(@RequestBody AuthRequest request) {
         return "Logged in as " + request.getUsername();
     }
 }
