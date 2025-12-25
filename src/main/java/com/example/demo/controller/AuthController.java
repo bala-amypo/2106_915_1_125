@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.AuthRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -9,6 +9,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest request) {
-        return "Login successful for " + request.getUsername();
+        return "Logged in as " + request.getUsername();
     }
 }

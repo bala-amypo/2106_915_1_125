@@ -1,10 +1,7 @@
 package com.example.demo.service;
 
-import org.springframework.stereotype.Service;
+import com.example.demo.entity.User;
 
-@Service
-public class UserService {
-    public String getMessage() {
-        return "Service working";
-    }
+public interface UserService {
+    User save(User user);
 }
