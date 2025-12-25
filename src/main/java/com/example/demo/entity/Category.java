@@ -5,32 +5,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "categories")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String name;
+    private boolean active;
 
-    private String description;
-
-    private boolean active = true;
-
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany
     private Set<MenuItem> menuItems = new HashSet<>();
 
-    // getters and setters
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public boolean isActive() { return active; }
-    public Set<MenuItem> getMenuItems() { return menuItems; }
-
-    public void setId(Long id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setDescription(String description) { this.description = description; }
+    public boolean getActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+
+    public Set<MenuItem> getMenuItems() { return menuItems; }
+    public void setMenuItems(HashSet<MenuItem> items) {
+        this.menuItems = items;
+    }
 }
