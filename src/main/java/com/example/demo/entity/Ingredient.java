@@ -9,11 +9,17 @@ public class Ingredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean active;
+    private String name;
+    private double costPrice;
+    private boolean active = true;
 
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
+    public double getCostPrice() { return costPrice; }
+    public boolean isActive() { return active; }
 
-    public boolean getActive() { return active; }
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setCostPrice(double costPrice) { this.costPrice = costPrice; }
     public void setActive(boolean active) { this.active = active; }
 }

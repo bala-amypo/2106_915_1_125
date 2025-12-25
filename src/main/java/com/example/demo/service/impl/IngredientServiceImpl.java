@@ -1,30 +1,21 @@
-package com.example.demo.controller;
+package com.example.demo.service.impl;
 
+import com.example.demo.service.IngredientService;
 import com.example.demo.entity.Ingredient;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
+import com.example.demo.repository.IngredientRepository;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
-@RestController
-@RequestMapping("/ingredients")
-public class IngredientController {
+@Service
+public class IngredientServiceImpl implements IngredientService {
 
-    private final List<Ingredient> ingredients = new ArrayList<>();
+    private final IngredientRepository repo;
 
-    @PostMapping
-    public Ingredient createIngredient(Ingredient ingredient) {
-        ingredients.add(ingredient);
-        return ingredient;
+    public IngredientServiceImpl(IngredientRepository repo) {
+        this.repo = repo;
     }
 
-    @PutMapping("/{id}/deactivate")
-    public void deactivateIngredient(long id) {
-        ingredients.forEach(i -> i.setActive(false));
-    }
-
-    @GetMapping
-    public List<Ingredient> getAllIngredients() {
-        return ingredients;
+    public List<Ingredient> getIngredients() {
+        return repo.findAll();
     }
 }
