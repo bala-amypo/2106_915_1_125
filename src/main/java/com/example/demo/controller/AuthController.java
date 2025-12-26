@@ -30,20 +30,18 @@ public class AuthController {
         User savedUser = userService.register(request);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
-
-    // ✅ LOGIN
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
 
-        // validate credentials
-        User user = userService.findByEmail(request.getEmail());
+    User user = userService.findByEmailIgnoreCase(request.getEmail());
 
-        if (user == null || !user.getPassword().equals(request.getPassword())) {
-            throw new BadCredentialsException("Invalid credentials");
-        }
-
-        String token = jwtTokenProvider.generateToken(user.getEmail());
-
-        return ResponseEntity.ok(new AuthResponse(token));
+    if (user == null || !user.getPassword().equals(request.getPassword())) {
+        throw new BadCredentialsException("Invalid credentials");
     }
+
+    String token = jwtTokenProvider.generateToken(user.getEmail());
+
+    return ResponseEntity.ok(new AuthResponse(token));
+}
+
 }
