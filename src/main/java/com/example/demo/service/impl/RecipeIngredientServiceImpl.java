@@ -1,8 +1,14 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.entity.Ingredient;
+import com.example.demo.entity.MenuItem;
 import com.example.demo.entity.RecipeIngredient;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.IngredientRepository;
+import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.repository.RecipeIngredientRepository;
-import com.example.demo.service.ProfitCalculationService;
+import com.example.demo.service.RecipeIngredientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,49 +16,60 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProfitCalculationServiceImpl implements ProfitCalculationService {
+public class RecipeIngredientServiceImpl implements RecipeIngredientService {
 
     private final RecipeIngredientRepository recipeIngredientRepository;
+    private final IngredientRepository ingredientRepository;
+    private final MenuItemRepository menuItemRepository;
 
     @Override
-    public RecipeIngredient saveIngredient(RecipeIngredient ingredient) {
-        return recipeIngredientRepository.save(ingredient);
+    public RecipeIngredient addIngredientToMenuItem(RecipeIngredient recipeIngredient) {
+
+        if (recipeIngredient.getQuantity() <= 0) {
+            throw new BadRequestException("Quantity must be greater than zero");
+        }
+
+        Ingredient ingredient = ingredientRepository.findById(
+                recipeIngredient.getIngredient().getId()
+        ).orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
+
+        MenuItem menuItem = menuItemRepository.findById(
+                recipeIngredient.getMenuItem().getId()
+        ).orElseThrow(() -> new ResourceNotFoundException("MenuItem not found"));
+
+        recipeIngredient.setIngredient(ingredient);
+        recipeIngredient.setMenuItem(menuItem);
+        recipeIngredient.setActive(true);
+
+        return recipeIngredientRepository.save(recipeIngredient);
     }
 
     @Override
-    public List<RecipeIngredient> getAllIngredients() {
+    public List<RecipeIngredient> getAllRecipeIngredients() {
         return recipeIngredientRepository.findAll();
     }
 
     @Override
-    public RecipeIngredient getIngredientById(Long id) {
-        return recipeIngredientRepository.findById(id).orElse(null);
+    public RecipeIngredient getRecipeIngredientById(Long id) {
+        return recipeIngredientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("RecipeIngredient not found"));
     }
 
     @Override
-    public RecipeIngredient updateIngredient(Long id, RecipeIngredient ingredient) {
-        RecipeIngredient existing = recipeIngredientRepository.findById(id).orElse(null);
-        if (existing != null) {
-            existing.setName(ingredient.getName());
-            existing.setQuantity(ingredient.getQuantity());
-            existing.setUnit(ingredient.getUnit());
-            existing.setActive(ingredient.isActive());
-            return recipeIngredientRepository.save(existing);
-        }
-        return null;
+    public void deleteRecipeIngredient(Long id) {
+        RecipeIngredient existing = getRecipeIngredientById(id);
+        recipeIngredientRepository.delete(existing);
     }
 
     @Override
-    public void deleteIngredient(Long id) {
-        recipeIngredientRepository.deleteById(id);
+    public void deactivateRecipeIngredient(Long id) {
+        RecipeIngredient existing = getRecipeIngredientById(id);
+        existing.setActive(false);
+        recipeIngredientRepository.save(existing);
     }
 
     @Override
-    public void deactivateIngredient(Long id) {
-        RecipeIngredient existing = recipeIngredientRepository.findById(id).orElse(null);
-        if (existing != null) {
-            existing.setActive(false);
-            recipeIngredientRepository.save(existing);
-        }
+    public Double getTotalQuantityOfIngredient(Long ingredientId) {
+        return recipeIngredientRepository.getTotalQuantityByIngredientId(ingredientId);
     }
 }

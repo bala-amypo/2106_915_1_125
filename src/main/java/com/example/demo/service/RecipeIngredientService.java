@@ -1,37 +1,19 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.ProfitCalculationRecord;
+import com.example.demo.entity.RecipeIngredient;
 import java.util.List;
 
-/**
- * Service interface for calculating and retrieving menu profitability.
- */
-public interface ProfitCalculationService {
+public interface RecipeIngredientService {
 
-    /**
-     * Calculate profit for a given MenuItem.
-     * @param menuItemId the menu item ID
-     * @return saved ProfitCalculationRecord
-     */
-    ProfitCalculationRecord calculateProfit(Long menuItemId);
+    RecipeIngredient addIngredientToMenuItem(RecipeIngredient recipeIngredient);
 
-    /**
-     * Get a profit calculation record by ID.
-     * @param id record ID
-     * @return ProfitCalculationRecord
-     */
-    ProfitCalculationRecord getCalculationById(Long id);
+    List<RecipeIngredient> getAllRecipeIngredients();
 
-    /**
-     * Get all profit calculation records.
-     * @return list of records
-     */
-    List<ProfitCalculationRecord> getAllCalculations();
+    RecipeIngredient getRecipeIngredientById(Long id);
 
-    /**
-     * Get all profit calculation records for a menu item.
-     * @param menuItemId menu item ID
-     * @return list of records
-     */
-    List<ProfitCalculationRecord> getCalculationsForMenuItem(Long menuItemId);
+    void deleteRecipeIngredient(Long id);
+
+    void deactivateRecipeIngredient(Long id);
+
+    Double getTotalQuantityOfIngredient(Long ingredientId);
 }
