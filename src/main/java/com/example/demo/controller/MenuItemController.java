@@ -4,8 +4,10 @@ import com.example.demo.entity.MenuItem;
 import com.example.demo.service.MenuItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+@RestController
 public class MenuItemController {
     private final MenuItemService menuItemService;
 
