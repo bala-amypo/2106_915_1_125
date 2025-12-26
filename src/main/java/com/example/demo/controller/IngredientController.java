@@ -4,6 +4,7 @@ import com.example.demo.entity.Ingredient;
 import com.example.demo.service.IngredientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public class IngredientController {
     private final IngredientService ingredientService;
 
+    @Autowired
     public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
     }

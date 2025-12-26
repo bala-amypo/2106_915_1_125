@@ -4,6 +4,7 @@ import com.example.demo.entity.MenuItem;
 import com.example.demo.service.MenuItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public class MenuItemController {
     private final MenuItemService menuItemService;
 
+    @Autowired
     public MenuItemController(MenuItemService menuItemService) {
         this.menuItemService = menuItemService;
     }
