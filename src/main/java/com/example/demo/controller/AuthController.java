@@ -24,9 +24,9 @@ public class AuthController {
     public User register(@RequestBody RegisterRequest request) {
         return userService.register(request);
     }
+
     @PostMapping("/login")
     public String login(@RequestBody AuthRequest request) {
-         return jwtTokenProvider.generateToken(request.getUsername());
-        }
-}
+        return jwtTokenProvider.generateToken(request.getUsername());
+    }
 }
