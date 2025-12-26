@@ -1,10 +1,10 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Category;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface CategoryRepository {
-    Optional<Category> findByNameIgnoreCase(String name);
-    Category save(Category category);
-    Optional<Category> findById(Long id);
+@Repository
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+    // You can add custom queries here if needed
 }
