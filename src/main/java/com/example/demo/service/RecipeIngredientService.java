@@ -1,51 +1,37 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.RecipeIngredient;
+import com.example.demo.entity.ProfitCalculationRecord;
 import java.util.List;
 
 /**
- * Service interface for managing RecipeIngredient entities.
- * Provides CRUD operations and a method to deactivate ingredients.
+ * Service interface for calculating and retrieving menu profitability.
  */
 public interface ProfitCalculationService {
 
     /**
-     * Save a new RecipeIngredient.
-     * @param ingredient the ingredient to save
-     * @return the saved ingredient
+     * Calculate profit for a given MenuItem.
+     * @param menuItemId the menu item ID
+     * @return saved ProfitCalculationRecord
      */
-    RecipeIngredient saveIngredient(RecipeIngredient ingredient);
+    ProfitCalculationRecord calculateProfit(Long menuItemId);
 
     /**
-     * Get all RecipeIngredients.
-     * @return list of all ingredients
+     * Get a profit calculation record by ID.
+     * @param id record ID
+     * @return ProfitCalculationRecord
      */
-    List<RecipeIngredient> getAllIngredients();
+    ProfitCalculationRecord getCalculationById(Long id);
 
     /**
-     * Get a RecipeIngredient by its ID.
-     * @param id the ingredient ID
-     * @return the ingredient, or null if not found
+     * Get all profit calculation records.
+     * @return list of records
      */
-    RecipeIngredient getIngredientById(Long id);
+    List<ProfitCalculationRecord> getAllCalculations();
 
     /**
-     * Update an existing RecipeIngredient.
-     * @param id the ID of the ingredient to update
-     * @param ingredient the updated ingredient data
-     * @return the updated ingredient, or null if not found
+     * Get all profit calculation records for a menu item.
+     * @param menuItemId menu item ID
+     * @return list of records
      */
-    RecipeIngredient updateIngredient(Long id, RecipeIngredient ingredient);
-
-    /**
-     * Delete a RecipeIngredient by its ID.
-     * @param id the ID of the ingredient to delete
-     */
-    void deleteIngredient(Long id);
-
-    /**
-     * Deactivate a RecipeIngredient (set active to false).
-     * @param id the ID of the ingredient to deactivate
-     */
-    void deactivateIngredient(Long id);
+    List<ProfitCalculationRecord> getCalculationsForMenuItem(Long menuItemId);
 }
