@@ -10,21 +10,20 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
 
     @Override
-    public User registerUser(RegisterRequest request) {
+    public User register(RegisterRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
         User user = User.builder()
                 .email(request.getEmail())
                 .password(request.getPassword())
-                .role(request.getRole()) // make sure Role is a valid field or enum
+                .role(request.getRole())
                 .build();
-        return userRepository.save(user);
-    }
 
-    @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.save(user);
     }
 }
