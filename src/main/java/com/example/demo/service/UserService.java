@@ -7,4 +7,3 @@ public interface UserService {
     User registerUser(RegisterRequest request);
     User findByEmail(String email);
 }
-`
