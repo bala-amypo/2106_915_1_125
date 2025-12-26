@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,30 +26,33 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     public MenuItem getMenuItemById(Long id) {
-        Optional<MenuItem> menuItem = menuItemRepository.findById(id);
-        return menuItem.orElseThrow(() -> new RuntimeException("MenuItem not found with id: " + id));
+        return menuItemRepository.findById(id).orElse(null);
     }
 
     @Override
-    public MenuItem updateMenuItem(Long id, MenuItem menuItemDetails) {
-        MenuItem existing = getMenuItemById(id);
-        existing.setName(menuItemDetails.getName());
-        existing.setPrice(menuItemDetails.getPrice());
-        existing.setActive(menuItemDetails.isActive());
-        existing.setCategory(menuItemDetails.getCategory());
-        return menuItemRepository.save(existing);
+    public MenuItem updateMenuItem(Long id, MenuItem menuItem) {
+        MenuItem existing = menuItemRepository.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setName(menuItem.getName());
+            existing.setPrice(menuItem.getPrice());
+            existing.setActive(menuItem.isActive());
+            existing.setCategory(menuItem.getCategory());
+            return menuItemRepository.save(existing);
+        }
+        return null;
     }
 
     @Override
     public void deleteMenuItem(Long id) {
-        MenuItem existing = getMenuItemById(id);
-        menuItemRepository.delete(existing);
+        menuItemRepository.deleteById(id);
     }
 
     @Override
     public void deactivateMenuItem(Long id) {
-        MenuItem existing = getMenuItemById(id);
-        existing.setActive(false);
-        menuItemRepository.save(existing);
+        MenuItem existing = menuItemRepository.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setActive(false);
+            menuItemRepository.save(existing);
+        }
     }
 }
