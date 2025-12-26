@@ -1,30 +1,28 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.MenuItem;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
+import com.example.demo.service.MenuItemService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import java.util.List;
 
-@RestController
-@RequestMapping("/menu-items")
 public class MenuItemController {
+    private final MenuItemService menuItemService;
 
-    private final List<MenuItem> items = new ArrayList<>();
-
-    @PostMapping
-    public MenuItem createMenuItem(MenuItem item) {
-        items.add(item);
-        return item;
+    public MenuItemController(MenuItemService menuItemService) {
+        this.menuItemService = menuItemService;
     }
 
-    @PutMapping("/{id}/deactivate")
-    public void deactivateMenuItem(long id) {
-        items.forEach(i -> i.setActive(false));
+    public ResponseEntity<MenuItem> createMenuItem(MenuItem menuItem) {
+        MenuItem created = menuItemService.createMenuItem(menuItem);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public List<MenuItem> getAllMenuItems() {
-        return items;
+    public ResponseEntity<List<MenuItem>> getAllMenuItems() {
+        return ResponseEntity.ok(menuItemService.getAllMenuItems());
+    }
+
+    public void deactivateMenuItem(Long id) {
+        menuItemService.deactivateMenuItem(id);
     }
 }

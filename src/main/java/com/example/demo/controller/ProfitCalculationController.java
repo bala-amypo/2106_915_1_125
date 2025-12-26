@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
+import com.example.demo.service.impl.ProfitCalculationServiceImpl;
 
-@RestController
-@RequestMapping("/profit")
 public class ProfitCalculationController {
+    private final ProfitCalculationServiceImpl profitCalculationService;
 
-    @GetMapping("/{cost}")
-    public Long calculate(@PathVariable Long cost) {
-        return cost * 2;
+    public ProfitCalculationController(ProfitCalculationServiceImpl profitCalculationService) {
+        this.profitCalculationService = profitCalculationService;
     }
 }
