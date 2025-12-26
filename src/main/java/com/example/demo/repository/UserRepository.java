@@ -4,6 +4,6 @@ import com.example.demo.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByEmail(String email); // Spring Data implements this automatically
+    User findByEmail(String email);
     boolean existsByEmail(String email);
 }
