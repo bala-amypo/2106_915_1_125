@@ -1,13 +1,13 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.MenuItem;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface MenuItemRepository {
-    Optional<MenuItem> findByNameIgnoreCase(String name);
-    MenuItem save(MenuItem menuItem);
-    Optional<MenuItem> findById(Long id);
-    List<MenuItem> findAll();
-    List<MenuItem> findAllActiveWithCategories();
+@Repository
+public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
+    // Example of a custom query method (optional):
+    // List<MenuItem> findByCategoryId(Long categoryId);
+
+    // You can add more query methods as needed
 }
