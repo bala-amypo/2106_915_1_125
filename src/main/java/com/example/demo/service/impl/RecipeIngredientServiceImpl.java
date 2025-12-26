@@ -1,39 +1,58 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.RecipeIngredient;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.repository.IngredientRepository;
-import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.repository.RecipeIngredientRepository;
-import com.example.demo.service.RecipeIngredientService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.ProfitCalculationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class RecipeIngredientServiceImpl implements RecipeIngredientService {
+@RequiredArgsConstructor
+public class ProfitCalculationServiceImpl implements ProfitCalculationService {
+
     private final RecipeIngredientRepository recipeIngredientRepository;
-    private final IngredientRepository ingredientRepository;
-    private final MenuItemRepository menuItemRepository;
 
-    @Autowired
-    public RecipeIngredientServiceImpl(RecipeIngredientRepository recipeIngredientRepository,
-                                     IngredientRepository ingredientRepository,
-                                     MenuItemRepository menuItemRepository) {
-        this.recipeIngredientRepository = recipeIngredientRepository;
-        this.ingredientRepository = ingredientRepository;
-        this.menuItemRepository = menuItemRepository;
+    @Override
+    public RecipeIngredient saveIngredient(RecipeIngredient ingredient) {
+        return recipeIngredientRepository.save(ingredient);
     }
 
     @Override
-    public RecipeIngredient addIngredientToMenuItem(RecipeIngredient recipeIngredient) {
-        if (recipeIngredient.getQuantity() <= 0) {
-            throw new BadRequestException("Invalid quantity");
+    public List<RecipeIngredient> getAllIngredients() {
+        return recipeIngredientRepository.findAll();
+    }
+
+    @Override
+    public RecipeIngredient getIngredientById(Long id) {
+        return recipeIngredientRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public RecipeIngredient updateIngredient(Long id, RecipeIngredient ingredient) {
+        RecipeIngredient existing = recipeIngredientRepository.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setName(ingredient.getName());
+            existing.setQuantity(ingredient.getQuantity());
+            existing.setUnit(ingredient.getUnit());
+            existing.setActive(ingredient.isActive());
+            return recipeIngredientRepository.save(existing);
         }
-        return recipeIngredientRepository.save(recipeIngredient);
+        return null;
     }
 
     @Override
-    public Double getTotalQuantityOfIngredient(Long ingredientId) {
-        return recipeIngredientRepository.getTotalQuantityByIngredientId(ingredientId);
+    public void deleteIngredient(Long id) {
+        recipeIngredientRepository.deleteById(id);
+    }
+
+    @Override
+    public void deactivateIngredient(Long id) {
+        RecipeIngredient existing = recipeIngredientRepository.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setActive(false);
+            recipeIngredientRepository.save(existing);
+        }
     }
 }
