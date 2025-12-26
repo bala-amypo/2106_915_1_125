@@ -1,25 +1,20 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity
 public class Category {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-    private String description;
-    private boolean active = true;
+    private Boolean active = true;
+    private Set<MenuItem> menuItems = new HashSet<>();
 
     public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public boolean isActive() { return active; }
-
     public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public void setDescription(String description) { this.description = description; }
-    public void setActive(boolean active) { this.active = active; }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
+    public Set<MenuItem> getMenuItems() { return menuItems; }
+    public void setMenuItems(Set<MenuItem> menuItems) { this.menuItems = menuItems; }
 }
