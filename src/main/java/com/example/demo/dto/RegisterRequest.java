@@ -4,6 +4,7 @@ public class RegisterRequest {
 
     private String email;
     private String password;
+    private String role;   // 🔥 REQUIRED BY UserServiceImpl
 
     public RegisterRequest() {
     }
@@ -22,5 +23,14 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    // 🔥 REQUIRED METHOD
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
