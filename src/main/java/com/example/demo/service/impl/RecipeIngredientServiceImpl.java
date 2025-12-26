@@ -23,25 +23,25 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
     private final MenuItemRepository menuItemRepository;
 
     @Override
-    public RecipeIngredient addIngredientToMenuItem(RecipeIngredient recipeIngredient) {
+    public RecipeIngredient addIngredientToMenuItem(RecipeIngredient ri) {
 
-        if (recipeIngredient.getQuantity() <= 0) {
-            throw new BadRequestException("Quantity must be greater than zero");
+        if (ri.getQuantity() == null || ri.getQuantity() <= 0) {
+            throw new BadRequestException("Quantity must be positive");
         }
 
         Ingredient ingredient = ingredientRepository.findById(
-                recipeIngredient.getIngredient().getId()
+                ri.getIngredient().getId()
         ).orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
 
         MenuItem menuItem = menuItemRepository.findById(
-                recipeIngredient.getMenuItem().getId()
+                ri.getMenuItem().getId()
         ).orElseThrow(() -> new ResourceNotFoundException("MenuItem not found"));
 
-        recipeIngredient.setIngredient(ingredient);
-        recipeIngredient.setMenuItem(menuItem);
-        recipeIngredient.setActive(true);
+        ri.setIngredient(ingredient);
+        ri.setMenuItem(menuItem);
+        ri.setActive(true);
 
-        return recipeIngredientRepository.save(recipeIngredient);
+        return recipeIngredientRepository.save(ri);
     }
 
     @Override
@@ -57,19 +57,20 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
 
     @Override
     public void deleteRecipeIngredient(Long id) {
-        RecipeIngredient existing = getRecipeIngredientById(id);
-        recipeIngredientRepository.delete(existing);
+        RecipeIngredient ri = getRecipeIngredientById(id);
+        recipeIngredientRepository.delete(ri);
     }
 
     @Override
     public void deactivateRecipeIngredient(Long id) {
-        RecipeIngredient existing = getRecipeIngredientById(id);
-        existing.setActive(false);
-        recipeIngredientRepository.save(existing);
+        RecipeIngredient ri = getRecipeIngredientById(id);
+        ri.setActive(false);
+        recipeIngredientRepository.save(ri);
     }
 
     @Override
     public Double getTotalQuantityOfIngredient(Long ingredientId) {
-        return recipeIngredientRepository.getTotalQuantityByIngredientId(ingredientId);
+        Double total = recipeIngredientRepository.getTotalQuantityByIngredientId(ingredientId);
+        return total != null ? total : 0.0;
     }
 }
