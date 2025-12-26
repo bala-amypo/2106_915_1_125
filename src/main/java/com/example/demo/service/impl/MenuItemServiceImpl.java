@@ -16,6 +16,7 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     public MenuItem saveMenuItem(MenuItem menuItem) {
+        menuItem.setActive(true);
         return menuItemRepository.save(menuItem);
     }
 
@@ -34,9 +35,10 @@ public class MenuItemServiceImpl implements MenuItemService {
         MenuItem existing = menuItemRepository.findById(id).orElse(null);
         if (existing != null) {
             existing.setName(menuItem.getName());
+            existing.setDescription(menuItem.getDescription());
             existing.setPrice(menuItem.getPrice());
-            existing.setActive(menuItem.isActive());
-            existing.setCategory(menuItem.getCategory());
+            existing.setCategories(menuItem.getCategories());
+            existing.setActive(menuItem.getActive());
             return menuItemRepository.save(existing);
         }
         return null;

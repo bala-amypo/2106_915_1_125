@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +16,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient saveIngredient(Ingredient ingredient) {
+        ingredient.setActive(true);
         return ingredientRepository.save(ingredient);
     }
 
@@ -27,18 +27,20 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient getIngredientById(Long id) {
-        Optional<Ingredient> optional = ingredientRepository.findById(id);
-        return optional.orElseThrow(() -> new RuntimeException("Ingredient not found with id: " + id));
+        return ingredientRepository.findById(id).orElse(null);
     }
 
     @Override
     public Ingredient updateIngredient(Long id, Ingredient ingredient) {
-        Ingredient existing = getIngredientById(id);
-        existing.setName(ingredient.getName());
-        existing.setQuantity(ingredient.getQuantity());
-        existing.setUnit(ingredient.getUnit());
-        existing.setActive(ingredient.isActive());
-        return ingredientRepository.save(existing);
+        Ingredient existing = ingredientRepository.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setName(ingredient.getName());
+            existing.setUnit(ingredient.getUnit());
+            existing.setCostPerUnit(ingredient.getCostPerUnit());
+            existing.setActive(ingredient.getActive());
+            return ingredientRepository.save(existing);
+        }
+        return null;
     }
 
     @Override
