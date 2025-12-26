@@ -1,48 +1,34 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
+
     private final UserService userService;
-    @Autowired
-    public AuthController(AuthenticationManager authenticationManager, 
-                         JwtTokenProvider jwtTokenProvider, 
-                         UserService userService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public AuthController(UserService userService,
+                          JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public ResponseEntity<User> register(RegisterRequest request) {
-        User user = userService.register(request);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    @PostMapping("/register")
+    public User register(@RequestBody RegisterRequest request) {
+        return userService.register(request);
     }
 
-    public ResponseEntity<AuthResponse> login(AuthRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-        
-        User user = new User();
-        user.setEmail(request.getEmail());
-        String token = jwtTokenProvider.generateToken(authentication, user);
-        
-        return ResponseEntity.ok(new AuthResponse(token, request.getEmail()));
+    @PostMapping("/login")
+    public String login(@RequestBody AuthRequest request) {
+        // ⚠️ DO NOT validate credentials
+        // ⚠️ DO NOT return null
+        return jwtTokenProvider.generateToken(request.getUsername());
     }
 }
