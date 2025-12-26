@@ -1,11 +1,11 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.RecipeIngredient;
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface RecipeIngredientRepository {
-    List<RecipeIngredient> findByMenuItemId(Long menuItemId);
-    boolean existsByMenuItemId(Long menuItemId);
-    Double getTotalQuantityByIngredientId(Long ingredientId);
-    RecipeIngredient save(RecipeIngredient recipeIngredient);
+@Repository
+public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredient, Long> {
+    // Optional: Add custom queries if needed, for example:
+    // List<RecipeIngredient> findByRecipeId(Long recipeId);
 }

@@ -1,17 +1,36 @@
 package com.example.demo.entity;
 
-public class RecipeIngredient {
-    private Long id;
-    private MenuItem menuItem;
-    private Ingredient ingredient;
-    private Double quantity;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public MenuItem getMenuItem() { return menuItem; }
-    public void setMenuItem(MenuItem menuItem) { this.menuItem = menuItem; }
-    public Ingredient getIngredient() { return ingredient; }
-    public void setIngredient(Ingredient ingredient) { this.ingredient = ingredient; }
-    public Double getQuantity() { return quantity; }
-    public void setQuantity(Double quantity) { this.quantity = quantity; }
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "recipe_ingredients")
+public class RecipeIngredient {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private double quantity;
+
+    @Column(nullable = false)
+    private String unit;
+
+    @Column(nullable = false)
+    private boolean active = true; // Default true
+
+    // Optional: link to Recipe entity if your application has recipes
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_id")
+    private Recipe recipe; // Uncomment if Recipe entity exists
+
 }
