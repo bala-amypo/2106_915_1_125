@@ -5,14 +5,10 @@ public class AuthRequest {
     private String email;
     private String password;
 
-    public AuthRequest() {
-    }
-
     public String getEmail() {
         return email;
     }
 
-    // 🔥 REQUIRED BY TEST
     public void setEmail(String email) {
         this.email = email;
     }
