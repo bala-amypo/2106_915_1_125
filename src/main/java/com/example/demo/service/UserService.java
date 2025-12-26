@@ -4,6 +4,9 @@ import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
 
 public interface UserService {
+
     User register(RegisterRequest request);
-    User save(User user);
+
+    // 🔥 REQUIRED FOR LOGIN TESTS
+    User findByEmail(String email);
 }
