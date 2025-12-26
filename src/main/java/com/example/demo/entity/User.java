@@ -1,12 +1,11 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -16,10 +15,6 @@ public class User {
     private Long id;
 
     private String email;
-
     private String password;
-
     private String role;
-
-    private Boolean active = true;
 }

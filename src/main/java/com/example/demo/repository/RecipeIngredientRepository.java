@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredient, Long> {
 
     @Query("""
-        SELECT SUM(ri.quantity)
+        SELECT COALESCE(SUM(ri.quantity), 0)
         FROM RecipeIngredient ri
         WHERE ri.ingredient.id = :ingredientId
         AND ri.active = true

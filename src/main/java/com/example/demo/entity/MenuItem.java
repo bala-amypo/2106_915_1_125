@@ -1,21 +1,13 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class MenuItem {
 
@@ -24,10 +16,10 @@ public class MenuItem {
     private Long id;
 
     private String name;
-
     private String description;
 
-    private BigDecimal sellingPrice;
+    // ⚠️ MUST MATCH service code
+    private BigDecimal price;
 
     private Boolean active = true;
 
