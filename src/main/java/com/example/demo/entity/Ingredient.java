@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "ingredients")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "ingredients")
 public class Ingredient {
 
     @Id
@@ -18,9 +18,9 @@ public class Ingredient {
 
     private String name;
 
-    private Double quantity; // quantity of ingredient
+    private double quantity;
 
-    private String unit; // unit of measurement, e.g., kg, litre
+    private String unit;
 
-    private Boolean active; // is ingredient active
+    private boolean active;
 }

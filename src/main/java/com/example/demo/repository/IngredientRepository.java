@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
+    // You can add custom queries if needed, e.g.,
+    // List<Ingredient> findByActiveTrue();
 }
