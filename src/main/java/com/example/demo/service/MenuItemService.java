@@ -4,8 +4,10 @@ import com.example.demo.entity.MenuItem;
 import java.util.List;
 
 public interface MenuItemService {
-    MenuItem createMenuItem(MenuItem menuItem);
+    MenuItem saveMenuItem(MenuItem menuItem);
     List<MenuItem> getAllMenuItems();
+    MenuItem getMenuItemById(Long id);
     MenuItem updateMenuItem(Long id, MenuItem menuItem);
-    void deactivateMenuItem(Long id);
+    void deleteMenuItem(Long id);
+    void deactivateMenuItem(Long id);  // This is required!
 }
