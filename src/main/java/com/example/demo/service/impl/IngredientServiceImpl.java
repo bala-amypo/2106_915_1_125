@@ -5,11 +5,15 @@ import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.IngredientRepository;
 import com.example.demo.service.IngredientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
+@Service
 public class IngredientServiceImpl implements IngredientService {
     private final IngredientRepository ingredientRepository;
 
+    @Autowired
     public IngredientServiceImpl(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
     }

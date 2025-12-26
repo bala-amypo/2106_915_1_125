@@ -8,14 +8,18 @@ import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.repository.RecipeIngredientRepository;
 import com.example.demo.service.MenuItemService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Service
 public class MenuItemServiceImpl implements MenuItemService {
     private final MenuItemRepository menuItemRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final CategoryRepository categoryRepository;
 
+    @Autowired
     public MenuItemServiceImpl(MenuItemRepository menuItemRepository, 
                               RecipeIngredientRepository recipeIngredientRepository,
                               CategoryRepository categoryRepository) {
