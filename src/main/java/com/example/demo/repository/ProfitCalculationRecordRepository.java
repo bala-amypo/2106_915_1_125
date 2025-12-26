@@ -1,8 +1,13 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.ProfitCalculationRecord;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Optional;
 
-public interface ProfitCalculationRecordRepository
-        extends JpaRepository<ProfitCalculationRecord, Long> {
+public interface ProfitCalculationRecordRepository {
+    List<ProfitCalculationRecord> findByProfitMarginGreaterThanEqual(Double margin);
+    List<ProfitCalculationRecord> findByMenuItemId(Long menuItemId);
+    Optional<ProfitCalculationRecord> findById(Long id);
+    List<ProfitCalculationRecord> findAll();
+    ProfitCalculationRecord save(ProfitCalculationRecord record);
 }
