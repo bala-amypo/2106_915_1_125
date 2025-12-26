@@ -16,28 +16,34 @@ public class IngredientServiceImpl implements IngredientService {
     private final IngredientRepository ingredientRepository;
 
     @Override
+    public Ingredient saveIngredient(Ingredient ingredient) {
+        return ingredientRepository.save(ingredient);
+    }
+
+    @Override
     public List<Ingredient> getAllIngredients() {
         return ingredientRepository.findAll();
     }
 
     @Override
     public Ingredient getIngredientById(Long id) {
-        Optional<Ingredient> ingredient = ingredientRepository.findById(id);
-        return ingredient.orElse(null);
+        return ingredientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found with id: " + id));
     }
 
     @Override
-    public Ingredient saveIngredient(Ingredient ingredient) {
-        return ingredientRepository.save(ingredient);
+    public Ingredient updateIngredient(Long id, Ingredient ingredient) {
+        Ingredient existing = getIngredientById(id);
+        existing.setName(ingredient.getName());
+        existing.setQuantity(ingredient.getQuantity());
+        existing.setUnit(ingredient.getUnit());
+        existing.setActive(ingredient.getActive());
+        return ingredientRepository.save(existing);
     }
 
     @Override
-    public void deactivateIngredient(Long id) {
-        Optional<Ingredient> ingredient = ingredientRepository.findById(id);
-        if (ingredient.isPresent()) {
-            Ingredient existing = ingredient.get();
-            existing.setActive(false);
-            ingredientRepository.save(existing);
-        }
+    public void deleteIngredient(Long id) {
+        Ingredient existing = getIngredientById(id);
+        ingredientRepository.delete(existing);
     }
 }
