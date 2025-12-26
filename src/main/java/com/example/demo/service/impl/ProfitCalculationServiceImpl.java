@@ -7,15 +7,19 @@ import com.example.demo.repository.IngredientRepository;
 import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.repository.ProfitCalculationRecordRepository;
 import com.example.demo.repository.RecipeIngredientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
+@Service
 public class ProfitCalculationServiceImpl {
     private final MenuItemRepository menuItemRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final IngredientRepository ingredientRepository;
     private final ProfitCalculationRecordRepository profitCalculationRecordRepository;
 
+    @Autowired
     public ProfitCalculationServiceImpl(MenuItemRepository menuItemRepository,
                                       RecipeIngredientRepository recipeIngredientRepository,
                                       IngredientRepository ingredientRepository,

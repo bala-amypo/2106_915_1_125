@@ -6,12 +6,16 @@ import com.example.demo.repository.IngredientRepository;
 import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.repository.RecipeIngredientRepository;
 import com.example.demo.service.RecipeIngredientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RecipeIngredientServiceImpl implements RecipeIngredientService {
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final IngredientRepository ingredientRepository;
     private final MenuItemRepository menuItemRepository;
 
+    @Autowired
     public RecipeIngredientServiceImpl(RecipeIngredientRepository recipeIngredientRepository,
                                      IngredientRepository ingredientRepository,
                                      MenuItemRepository menuItemRepository) {
