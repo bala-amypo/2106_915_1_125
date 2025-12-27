@@ -7,10 +7,7 @@ import java.io.IOException;
 
 public class HelloServlet extends HttpServlet {
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (response == null) {
-            throw new IOException("Response cannot be null");
-        }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain");
         response.getWriter().write("Hello from servlet");
     }
