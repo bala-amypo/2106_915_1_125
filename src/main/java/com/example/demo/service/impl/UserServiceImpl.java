@@ -19,6 +19,9 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public User register(RegisterRequest request) {
+        if (userRepository.findByEmailIgnoreCase(request.getEmail()).isPresent()) {
+            throw new BadRequestException("User already exists");
+        }
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
