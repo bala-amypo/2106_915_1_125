@@ -2,12 +2,9 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.MenuItem;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.Optional;
+
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
-    // Example of a custom query method (optional):
-    // List<MenuItem> findByCategoryId(Long categoryId);
-
-    // You can add more query methods as needed
+    Optional<MenuItem> findByNameIgnoreCase(String name);
 }

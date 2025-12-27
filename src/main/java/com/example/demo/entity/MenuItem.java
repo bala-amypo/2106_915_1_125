@@ -17,12 +17,14 @@ public class MenuItem {
 
     private String name;
     private String description;
-
-    // ⚠️ MUST MATCH service code
-    private BigDecimal price;
-
+    private BigDecimal sellingPrice;
     private Boolean active = true;
 
     @ManyToMany
+    @JoinTable(
+        name = "menuitem_category",
+        joinColumns = @JoinColumn(name = "menuitem_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
     private Set<Category> categories = new HashSet<>();
 }
