@@ -1,10 +1,12 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.MenuItem;
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import java.util.List;
 import java.util.Optional;
 
-public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
+public interface MenuItemRepository {
     Optional<MenuItem> findByNameIgnoreCase(String name);
+    MenuItem save(MenuItem menuItem);
+    Optional<MenuItem> findById(Long id);
+    List<MenuItem> findAll();
 }
