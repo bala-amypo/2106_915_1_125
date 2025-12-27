@@ -5,9 +5,11 @@ import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.IngredientRepository;
 import com.example.demo.service.IngredientService;
+import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.util.List;
 
-public class IngredientServiceImpl implements IngredientService {
+@Service class IngredientServiceImpl implements IngredientService {
     private final IngredientRepository ingredientRepository;
 
     public IngredientServiceImpl(IngredientRepository ingredientRepository) {
@@ -33,5 +35,10 @@ public class IngredientServiceImpl implements IngredientService {
         Ingredient existing = getIngredientById(id);
         existing.setCostPerUnit(ingredient.getCostPerUnit());
         return ingredientRepository.save(existing);
+    }
+    
+    @Override
+    public List<Ingredient> getAllIngredients() {
+        return ingredientRepository.findAll();
     }
 }
