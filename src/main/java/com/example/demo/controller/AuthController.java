@@ -1,19 +1,10 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.AuthenticationManager;
 
-@RestController
-@RequestMapping("/auth")
-@RequiredArgsConstructor
 public class AuthController {
-    private final UserService userService;
-
-    @PostMapping("/register")
-    public User register(@RequestBody RegisterRequest request) {
-        return userService.register(request);
-    }
+    public AuthController(AuthenticationManager authenticationManager, 
+                         Object jwtTokenProvider, 
+                         UserService userService) {}
 }
