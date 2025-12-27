@@ -17,9 +17,14 @@ public class User {
     
     @Column(nullable = false)
     private String role;
+    
+    @Column(nullable = false)
+    private Boolean active = true;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
