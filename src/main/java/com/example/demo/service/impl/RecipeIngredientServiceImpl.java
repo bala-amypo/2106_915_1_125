@@ -22,6 +22,9 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
     
     @Override
     public RecipeIngredient addIngredientToMenuItem(RecipeIngredient recipeIngredient) {
+        if (recipeIngredient.getQuantity().compareTo(BigDecimal.ZERO) < 0) {
+            throw new BadRequestException("Quantity cannot be negative");
+        }
         return recipeIngredientRepository.save(recipeIngredient);
     }
     

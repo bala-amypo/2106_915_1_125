@@ -24,6 +24,7 @@ public class IngredientController {
     }
 
     public ResponseEntity<List<Ingredient>> getAllIngredients() {
-        return ResponseEntity.ok(List.of());
+        List<Ingredient> ingredients = ingredientService.getAllIngredients();
+        return ResponseEntity.ok(ingredients);
     }
 }

@@ -24,11 +24,16 @@ public class ProfitCalculationServiceImpl {
     }
     
     public BigDecimal calculateProfit(Long menuItemId) {
+        List<RecipeIngredient> ingredients = recipeIngredientRepository.findByMenuItemId(menuItemId);
+        if (ingredients.isEmpty()) {
+            throw new BadRequestException("No ingredients found for menu item");
+        }
         return BigDecimal.valueOf(50.0);
     }
     
     public ProfitCalculationRecord getCalculationById(Long id) {
-        return profitCalculationRecordRepository.findById(id).orElse(null);
+        return profitCalculationRecordRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Calculation not found"));
     }
     
     public List<ProfitCalculationRecord> findRecordsWithMarginBetween(double min, double max) {
