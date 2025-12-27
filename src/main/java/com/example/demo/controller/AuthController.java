@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
 import com.example.demo.security.JwtTokenProvider;
@@ -31,7 +32,7 @@ public class AuthController {
     }
     
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok("token");
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+        return ResponseEntity.ok(new AuthResponse("token"));
     }
 }
