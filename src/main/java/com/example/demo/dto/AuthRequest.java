@@ -1,7 +1,11 @@
 package com.example.demo.dto;
 
-public class AuthRequest {
-}
+import lombok.Data;
 
-class RegisterRequest {
+@Data
+public class RegisterRequest {
+
+    private String email;
+    private String password;
+    private String role;
 }
