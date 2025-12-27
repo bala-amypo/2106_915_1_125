@@ -18,7 +18,10 @@ public class MenuItemController {
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
     
-    public void deactivateMenuItem(Long id) {}
+    public void deactivateMenuItem(Long id) {
+        MenuItem item = new MenuItem();
+        item.setActive(false);
+    }
     
     public ResponseEntity<List<MenuItem>> getAllMenuItems() {
         return ResponseEntity.ok(List.of(new MenuItem()));
