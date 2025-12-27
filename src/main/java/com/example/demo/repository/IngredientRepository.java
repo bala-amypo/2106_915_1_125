@@ -1,12 +1,11 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Ingredient;
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
-public interface IngredientRepository {
+@Repository
+public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     Optional<Ingredient> findByNameIgnoreCase(String name);
-    Ingredient save(Ingredient ingredient);
-    Optional<Ingredient> findById(Long id);
-    List<Ingredient> findAll();
 }
