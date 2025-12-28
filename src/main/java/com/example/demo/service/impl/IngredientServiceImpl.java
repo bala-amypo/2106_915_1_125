@@ -6,16 +6,18 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.IngredientRepository;
 import com.example.demo.service.IngredientService;
 import org.springframework.stereotype.Service;
-import java.math.BigDecimal;
+
 import java.util.List;
+import java.util.Optional;
 
-@Service class IngredientServiceImpl implements IngredientService {
+@Service
+public class IngredientServiceImpl implements IngredientService {
     private final IngredientRepository ingredientRepository;
-
+    
     public IngredientServiceImpl(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
     }
-
+    
     @Override
     public Ingredient createIngredient(Ingredient ingredient) {
         if (ingredientRepository.findByNameIgnoreCase(ingredient.getName()).isPresent()) {
@@ -23,22 +25,29 @@ import java.util.List;
         }
         return ingredientRepository.save(ingredient);
     }
-
+    
     @Override
     public Ingredient getIngredientById(Long id) {
         return ingredientRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
-    }
-
-    @Override
-    public Ingredient updateIngredient(Long id, Ingredient ingredient) {
-        Ingredient existing = getIngredientById(id);
-        existing.setCostPerUnit(ingredient.getCostPerUnit());
-        return ingredientRepository.save(existing);
+            .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
     }
     
     @Override
     public List<Ingredient> getAllIngredients() {
         return ingredientRepository.findAll();
+    }
+    
+    @Override
+    public Ingredient updateIngredient(Long id, Ingredient ingredient) {
+        if (!ingredientRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Ingredient not found");
+        }
+        ingredient.setId(id);
+        return ingredientRepository.save(ingredient);
+    }
+    
+    @Override
+    public void deleteIngredient(Long id) {
+        ingredientRepository.deleteById(id);
     }
 }
