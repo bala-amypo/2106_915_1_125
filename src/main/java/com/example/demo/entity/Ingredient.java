@@ -1,13 +1,22 @@
 package com.example.demo.entity;
 
-import java.math.BigDecimal;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "ingredients")
 public class Ingredient {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
-    private BigDecimal cost;   // ✅ FIXED
-    private boolean active;
+
+    private boolean active = true;
+
+    public Ingredient() {
+    }
 
     public Long getId() {
         return id;
@@ -23,14 +32,6 @@ public class Ingredient {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public BigDecimal getCost() {
-        return cost;
-    }
-
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
     }
 
     public boolean isActive() {
