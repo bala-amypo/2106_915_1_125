@@ -4,6 +4,8 @@ import com.example.demo.service.impl.ProfitCalculationServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/api/profit")
 public class ProfitCalculationController {
@@ -15,7 +17,7 @@ public class ProfitCalculationController {
     }
 
     @GetMapping
-    public ResponseEntity<String> calculateProfit() {
-        return ResponseEntity.ok("Profit calculated successfully");
+    public ResponseEntity<BigDecimal> calculateProfit() {
+        return ResponseEntity.ok(profitService.calculateProfit());
     }
 }
