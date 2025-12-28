@@ -1,30 +1,36 @@
 package com.example.demo.config;
 
-import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
-import org.springframework.boot.CommandLineRunner;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.List;
 
 @Configuration
-public class DataInitializer {
+public class OpenApiConfig {
 
     @Bean
-    CommandLineRunner insertDefaultUser(UserRepository userRepository,
-                                        PasswordEncoder passwordEncoder) {
+    public OpenAPI customOpenAPI() {
 
-        return args -> {
-            if (userRepository.findByEmailIgnoreCase("demo@gmail.com").isEmpty()) {
+        SecurityScheme bearerAuth = new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT");
 
-                User user = new User();
-                user.setEmail("demo@gmail.com");
-                user.setPassword(passwordEncoder.encode("demo123"));
-                user.setRole("ROLE_USER");
-                user.setActive(true);
-
-                userRepository.save(user);
-            }
-        };
+        return new OpenAPI()
+                .servers(List.of(
+                        new Server().url("https://9316.pro604cr.amypo.ai/")
+                ))
+                .components(
+                        new Components()
+                                .addSecuritySchemes("bearerAuth", bearerAuth)
+                )
+                .addSecurityItem(
+                        new SecurityRequirement().addList("bearerAuth")
+                );
     }
 }
