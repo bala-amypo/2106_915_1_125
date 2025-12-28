@@ -1,23 +1,35 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.ProfitCalculationRecord;
 import com.example.demo.service.impl.ProfitCalculationServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/profit")
+@RequestMapping("/profits")
 public class ProfitCalculationController {
 
-    private final ProfitCalculationServiceImpl profitService;
+    private final ProfitCalculationServiceImpl profitCalculationService;
 
-    public ProfitCalculationController(ProfitCalculationServiceImpl profitService) {
-        this.profitService = profitService;
+    public ProfitCalculationController(ProfitCalculationServiceImpl profitCalculationService) {
+        this.profitCalculationService = profitCalculationService;
+    }
+
+    @PostMapping("/{menuItemId}")
+    public ResponseEntity<ProfitCalculationRecord> calculateProfit(
+            @PathVariable Long menuItemId) {
+        return ResponseEntity.ok(profitCalculationService.calculateProfit(menuItemId));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProfitCalculationRecord> getCalculation(@PathVariable Long id) {
+        return ResponseEntity.ok(profitCalculationService.getCalculationById(id));
     }
 
     @GetMapping
-    public ResponseEntity<BigDecimal> calculateProfit() {
-        return ResponseEntity.ok(profitService.calculateProfit());
+    public ResponseEntity<List<ProfitCalculationRecord>> getAll() {
+        return ResponseEntity.ok(profitCalculationService.getAllCalculations());
     }
 }
