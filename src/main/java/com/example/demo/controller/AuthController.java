@@ -36,7 +36,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         AuthResponse response = new AuthResponse();
-        response.setToken("dummy-token");
+        response.setToken("jwt-token");
         return ResponseEntity.ok(response);
     }
 }
