@@ -13,6 +13,6 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .servers(List.of(new Server().url("")));
+                .servers(List.of(new Server().url("https://9120.408procr.amypo.ai/")));
     }
 }
