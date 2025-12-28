@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "recipe_ingredients")
@@ -14,17 +15,17 @@ public class RecipeIngredient {
     @JoinColumn(name = "ingredient_id")
     private Ingredient ingredient;
 
-    private Double quantity;
+    private BigDecimal quantity;  // <-- change from Double to BigDecimal
 
     public RecipeIngredient() {}
 
-    // ===== GETTERS & SETTERS =====
+    // getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public Ingredient getIngredient() { return ingredient; }
     public void setIngredient(Ingredient ingredient) { this.ingredient = ingredient; }
 
-    public Double getQuantity() { return quantity; }
-    public void setQuantity(Double quantity) { this.quantity = quantity; }
+    public BigDecimal getQuantity() { return quantity; }
+    public void setQuantity(BigDecimal quantity) { this.quantity = quantity; }
 }
