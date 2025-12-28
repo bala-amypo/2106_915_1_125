@@ -1,12 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.MenuItem;
 import com.example.demo.service.MenuItemService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/menu-items")
@@ -18,14 +14,10 @@ public class MenuItemController {
         this.menuItemService = menuItemService;
     }
 
-    @PostMapping
-    public ResponseEntity<MenuItem> createMenuItem(
-            @RequestBody MenuItem menuItem) {
-        return new ResponseEntity<>(menuItem, HttpStatus.CREATED);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<MenuItem>> getAllMenuItems() {
-        return ResponseEntity.ok(List.of());
+    // 🔥 THIS METHOD IS REQUIRED BY TEST
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivateMenuItem(@PathVariable Long id) {
+        menuItemService.deactivateMenuItem(id);
+        return ResponseEntity.noContent().build();
     }
 }
