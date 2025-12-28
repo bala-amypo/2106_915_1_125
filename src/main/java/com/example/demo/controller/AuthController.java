@@ -7,16 +7,13 @@ import com.example.demo.entity.User;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -31,16 +28,29 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
-        User user = userService.register(request);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
-    }
+ 
+   @PostMapping("/register")
+public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
+    User user = userService.register(request);
+    return ResponseEntity.status(201).body(user);
+}
+
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        AuthResponse response = new AuthResponse();
-        response.setToken("dummy-jwt-token");
-        return ResponseEntity.ok(response);
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        
+        User user = userService.findByEmail(request.getEmail());
+
+        String token = jwtTokenProvider.generateToken(request.getEmail(), user);
+
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 }
