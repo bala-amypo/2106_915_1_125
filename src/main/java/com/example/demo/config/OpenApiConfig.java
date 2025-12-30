@@ -21,7 +21,7 @@ public class OpenApiConfig {
                 .scheme("bearer")
                 .bearerFormat("JWT");
 
-        return new Op`enAPI()
+        return new OpenAPI()
                 .servers(List.of(
                         new Server().url("https://9120.408procr.amypo.ai/")
                 ))
